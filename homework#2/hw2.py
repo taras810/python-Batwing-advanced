@@ -161,30 +161,7 @@ print(f"{screen.brand_name} has {screen.screen_type} screen")
 #Task 3
 print("-------------------------------------------------\n")
 
-class DictMixin():
-    def to_dict(self):
-        return self._traverse_dict(self.__dict__)
-
-    def _traverse_dict(self, attributes):
-        result = {}
-        for key, value in attributes.items():
-            result[key] = self._traverse(key, value)
-
-        return result
-
-    def _traverse(self, key, value):
-        if isinstance(value, DictMixin):
-            return value.to_dict()
-        elif isinstance(value, dict):
-            return self._traverse_dict(value)
-        elif isinstance(value, list):
-            return [self._traverse(key, v) for v in value]
-        elif hasattr(value, '__dict__'):
-            return self._traverse_dict(value.__dict__)
-        else:
-            return value
-
-class Profile(DictMixin):
+class Profile:
     """
     Create regular class taking 8 params on init - name, last_name, phone_number, address, email, birthday, age, sex
     Override a printable string representation of Profile class and return: list of the params mentioned above
@@ -199,8 +176,11 @@ class Profile(DictMixin):
         self.last_name = last_name
         self.name = name
 
+    def list_of_param(self):
+        return list(self.__dict__.values())
+
 profile = Profile('Bob', 'Snail', '+38012345678', 'Mexico', 'bob.snail@gmail.com', 'December', '20', 'male')
-print(profile.to_dict())
+print(profile.list_of_param())
 
 #Task 4
 # Create an interface for the Laptop with the next methods: Screen, Keyboard, Touchpad, WebCam, Ports, Dynamics
