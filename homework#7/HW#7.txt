@@ -1,0 +1,43 @@
+1. Move dump school66 to your local mysql database school66
+
+- sudo mysql -u root -p
+- CREATE DATABASE school66;
+- exit
+- sudo mysql -u root --password=<pass> school66 < school66.sql
+
+2. Create table level (В якому класі студент 10, 11) and make relation with students.
+
+- sudo mysql -u root -p
+- USE school66;
+- CREATE TABLE level (id INT AUTO_INCREMENT PRIMARY KEY, grade_level INT NOT NULL, student_id INT NOT NULL);
+- INSERT INTO level(grade_level, student_id) VALUES(9, 1), (5, 2), (11, 3), (8, 4);
+- SELECT s.first_name, s.last_name, l.grade_level FROM students s INNER JOIN level l ON s.id = l.student_id;
+
++------------+-----------+-------------+
+| first_name | last_name | grade_level |
++------------+-----------+-------------+
+| Ivan       | Pidhaynuy |           9 |
+| Petro      | Pravdoryb |           5 |
+| Yuriy      | Skobylko  |          11 |
+| Liubomyr   | Luzhnyi   |           8 |
++------------+-----------+-------------+
+
+3. Make query which select all students with teacher, levels and lessons
+
+- SELECT s.id AS student_id, s.first_name, s.last_name, lv.grade_level, les.name AS lesson_name, t.name AS teacher_name FROM students s INNER JOIN level lv ON s.id = lv.student_id INNER JOIN students_lessons sl ON sl.student_id = s.id LEFT JOIN lessons les ON sl.lesson_id = les.id INNER JOIN teachers t ON t.lesson_id = les.id ORDER BY s.id;
+
++------------+------------+-----------+-------------+-------------+----------------------+
+| student_id | first_name | last_name | grade_level | lesson_name | teacher_name         |
++------------+------------+-----------+-------------+-------------+----------------------+
+|          1 | Ivan       | Pidhaynuy |           9 | IT          | Yulia Liubomyrivna   |
+|          2 | Petro      | Pravdoryb |           5 | Math        | Margaryta Ivanivna   |
+|          2 | Petro      | Pravdoryb |           5 | Biology     | Roskolana Stepanivna |
+|          2 | Petro      | Pravdoryb |           5 | Biology     | Kateryna Yuriivna    |
+|          3 | Yuriy      | Skobylko  |          11 | Math        | Margaryta Ivanivna   |
+|          3 | Yuriy      | Skobylko  |          11 | Biology     | Roskolana Stepanivna |
+|          3 | Yuriy      | Skobylko  |          11 | Biology     | Kateryna Yuriivna    |
+|          4 | Liubomyr   | Luzhnyi   |           8 | IT          | Yulia Liubomyrivna   |
+|          4 | Liubomyr   | Luzhnyi   |           8 | Biology     | Roskolana Stepanivna |
+|          4 | Liubomyr   | Luzhnyi   |           8 | Biology     | Kateryna Yuriivna    |
++------------+------------+-----------+-------------+-------------+----------------------+
+
