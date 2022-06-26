@@ -76,7 +76,7 @@ class Realtor(metaclass=RealtorMeta):
     def show_houses_info(self):
         print("Please see the available options:")
         for house in self.houses:
-           house.house_info()
+            house.house_info()
 
     def give_discount(self):
         return self.discount
@@ -87,6 +87,7 @@ class Realtor(metaclass=RealtorMeta):
             person.money = 0
         else:
             print("You are lucky guy!")
+
 
 villa = Home("90m2", 30000)
 town_home = Home("120m2", 50000)
@@ -106,6 +107,3 @@ town_home.house_info()
 tom.show_info()
 tom.make_money()
 tom.buy_a_house(villa.cost)
-
-
-
