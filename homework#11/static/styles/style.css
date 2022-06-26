@@ -18,3 +18,12 @@ body {
 label {
 	color: #F0F8FF;
 }
+
+.no_res {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 150px;
+  color: #F0F8FF;
+  font-size: 24px;
+}

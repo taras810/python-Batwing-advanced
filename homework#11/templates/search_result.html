@@ -39,6 +39,11 @@
       </div>
     </nav>
     <div class="container">
+        {% if no_res %}
+        <div class="no_res">
+            <p> {{ no_res }}</p>
+        </div>
+        {% endif %}
         <div class="row">
             {% for user in users %}
                 <div class="card" style="width: 18rem;">

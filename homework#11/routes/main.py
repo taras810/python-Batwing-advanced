@@ -64,18 +64,26 @@ def delete(id):
     write_users(users)
     return redirect("/")
 
+
 @app.route("/search", methods=["GET"])
 def search():
-    search = request.args.get("search")
+    search_param = list(request.args.get("search").split(" "))
     users = get_users()
     results = []
+    unique_result = []
 
-    if search:
+    if search_param:
         for user in users:
             for value in user.values():
-                if search.lower() in str(value).lower():
-                    results.append(user)
+                for param in search_param:
+                    if param.lower() in str(value).lower():
+                        results.append(user)
 
-    return render_template("search_result.html", users=results)
+    for x in results:
+        if x not in unique_result:
+            unique_result.append(x)
 
-
+    if len(results) > 0:
+        return render_template("search_result.html", users=unique_result)
+    else:
+        return render_template("search_result.html", no_res="No Results Found")
