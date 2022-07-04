@@ -1,9 +1,10 @@
 import http
 
-from flask import Blueprint, Response, request, jsonify
+from flask import Blueprint, request, jsonify
 from marshmallow import ValidationError
 
 from database import db
+from models.group import Group
 from models.user import User
 from serializers.user import UserSchema
 
@@ -69,3 +70,19 @@ def delete(id_):
     User.query.filter_by(id=id_).delete()
     db.session.commit()
     return {}, http.HTTPStatus.NO_CONTENT
+
+
+@user_router.route('/<int:id_>/add_group/<int:group_id>', methods=['POST'])
+def add_to_group(id_, group_id):
+    user = User.query.filter_by(id=id_).first()
+    if group := Group.query.filter_by(id=group_id).first():
+        user.group_id = group.id
+        db.session.add(user)
+        db.session.commit()
+        schema = UserSchema()
+        new_user_json = schema.dump(user)
+        return new_user_json, http.HTTPStatus.OK
+    else:
+        return {"No group found"}, http.HTTPStatus.BAD_REQUEST
+
+
