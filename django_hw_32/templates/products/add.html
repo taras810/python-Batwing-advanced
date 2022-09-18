@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <h1 class="text-center">Add Product</h1>
+        <form method="POST" action="{% url 'add_product' %}">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="title" class="form-label">Title</label>
+                <input type="text" class="form-control" name="title" id="title" aria-describedby="title">
+                {% if form.title.errors %}
+                 <div class="form-text text-danger">{{ form.title.errors }}</div>
+                {% endif %}
+            </div>
+            <div class="mb-3">
+                <label for="description" class="form-label">Description</label>
+                <textarea class="form-control" id="description" name="description"></textarea>
+                {% if form.description.errors %}
+                 <div class="form-text text-danger">{{ form.description.errors }}</div>
+                {% endif %}
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Categories</label>
+                <select class="form-select" multiple aria-label="multiple select example" name="categories">
+                    {% for category in categories %}
+                        <option value="{{ category.id }}">{{ category.title }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            {% if user.is_staff %}
+            <div class="mb-3">
+            <label for="price" class="form-label">Price</label>
+            <input type="number" min="0" class="form-control" id="price" name="price">
+            <input type="checkbox" id="approved" name="approved">
+            <label for="approved" style="margin-right:30px">Approved</label>
+            <input type="checkbox" id="display_on_main_page" name="display_on_main_page">
+            <label for="display_on_main_page">Display on main page</label>
+            </div>
+            {% endif %}
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
